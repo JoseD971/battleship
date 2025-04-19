@@ -1,0 +1,52 @@
+@font-face {
+    font-family: 'Montserrat';
+    src: url('../fonts/Montserrat/Montserrat-VariableFont_wght.ttf') format('truetype');
+    font-style: normal;
+} 
+
+@font-face {
+    font-family: 'Atkinson Hyperlegible Next';
+    src: url('../fonts/AtkinsonHyperlegibleNext/AtkinsonHyperlegibleNext-VariableFont_wght.ttf') format('truetype');
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Roboto';
+    src: url('../fonts/Roboto/Roboto-VariableFont_wdth\,wght.ttf') format('truetype');
+    font-style: normal;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat', 'Atkinson Hyperlegible Next', 'Roboto';
+}
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(10, 50px);
+    grid-template-rows: repeat(10, 50px);
+    gap: 1px;
+    margin-bottom: 20px;
+}
+
+.cell {
+    width: 50px;
+    height: 50px;
+    background-color: #add8e6;
+    border: 1px solid #000;
+    cursor: pointer;
+}
+
+.hit {
+    background-color: red;
+}
+
+.miss {
+    background-color: gray;
+}
+
+.ship {
+    background-color: darkblue;
+}
