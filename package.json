@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
+    "watch": "jest --watch",
     "start": "webpack serve --open --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
     "gh-deploy": "git push origin :gh-pages && git subtree push --prefix dist origin gh-pages",
