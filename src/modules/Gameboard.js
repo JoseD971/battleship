@@ -1,36 +1,31 @@
 class Gameboard {
     constructor() {
-        this.board = [];
-        this.missedAttacks = [];
-        this.ships = [];
-        this.createEmptyBoard();
-    }
-
-    createEmptyBoard() {
-        for (let i = 0; i < 10; i++) {
-            this.board[i] = [];
-            for (let j = 0; j < 10; j++) {
-                this.board[i][j] = null;
-            }
-        }
+        this.board = Array(10).fill().map(() => Array(10).fill(null));
+        this.attacks = [];
     }
 
     placeShip(ship, coordinates, orientation) {
         const [x, y] = coordinates;
-
+    
         if (!this.canPlaceShip(ship, x, y, orientation)) {
-            throw new Error('The ship cannot be placed in that position..');
+            throw new Error('The ship cannot be placed in that position.');
         }
-
+    
+        let shipCoordinates = [];
+    
         for (let i = 0; i < ship.length; i++) {
             if (orientation === 'horizontal') {
                 this.board[x][y + i] = ship;
+                shipCoordinates.push([x, y + i]);
             } else if (orientation === 'vertical') {
                 this.board[x + i][y] = ship;
+                shipCoordinates.push([x + i, y]);
             }
         }
+    
+        ship.coordinates = shipCoordinates;
     }
-
+    
     canPlaceShip(ship, x, y, orientation) {
         if (orientation === 'horizontal') {
             if (y + ship.length > 10) return false;
@@ -47,20 +42,23 @@ class Gameboard {
         return true;
       }
 
-    receiveAttack(coordinates) {
+      receiveAttack(coordinates) {
         const [x, y] = coordinates;
         const ship = this.board[x][y];
-
-        if(ship) {
-            ship.hit();
+    
+        if (ship === null) {
+            this.attacks.push([x, y]);
+            return false;
         } else {
-            this.missedAttacks.push(coordinates);
+            ship.hit();
+            this.attacks.push([x, y]);
+            return true;
         }
     }
-
+    
     allShipsSunk() {
-        return this.ships.every(ship => ship.isSunk());
-    }
+        return this.board.flat().every(cell => cell === null || cell.isSunk());
+    }    
 }
 
 export default Gameboard;
