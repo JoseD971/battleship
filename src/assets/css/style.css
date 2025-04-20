@@ -39,14 +39,33 @@
     cursor: pointer;
 }
 
+.cell:hover {
+    filter: brightness(0.7);
+}
+
 .hit {
-    background-color: red;
+    background-color: red !important;
 }
 
 .miss {
-    background-color: gray;
+    background-color: gray !important;
 }
 
 .ship {
     background-color: darkblue;
+}
+
+.title {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.board-space h1 {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.playground {
+    display: flex;
+    justify-content: space-around;
 }
