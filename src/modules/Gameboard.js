@@ -15,19 +15,37 @@ class Gameboard {
         }
     }
 
-    placeShip(ship, startCoordinates, orientation) {
-        const [x, y] = startCoordinates;
-        const shipLength = ship.length;
+    placeShip(ship, coordinates, orientation) {
+        const [x, y] = coordinates;
 
-        for (let i = 0; i < shipLength; i++) {
-            if(orientation === 'horizontal') {
-                this.board[x][y + i] = ship;
-            } else if(orientation === 'vertical') {
-                this.board[x + i][y] = ship;
-            } 
+        if (!this.canPlaceShip(ship, x, y, orientation)) {
+            throw new Error('The ship cannot be placed in that position..');
         }
-        this.ships.push(ship);
+
+        for (let i = 0; i < ship.length; i++) {
+            if (orientation === 'horizontal') {
+                this.board[x][y + i] = ship;
+            } else if (orientation === 'vertical') {
+                this.board[x + i][y] = ship;
+            }
+        }
     }
+
+    canPlaceShip(ship, x, y, orientation) {
+        if (orientation === 'horizontal') {
+            if (y + ship.length > 10) return false;
+            for (let i = 0; i < ship.length; i++) {
+                if (this.board[x][y + i] !== null) return false;
+            }
+        } else if (orientation === 'vertical') {
+            if (x + ship.length > 10) return false;
+            for (let i = 0; i < ship.length; i++) {
+                if (this.board[x + i][y] !== null) return false;
+            }
+        }
+    
+        return true;
+      }
 
     receiveAttack(coordinates) {
         const [x, y] = coordinates;
