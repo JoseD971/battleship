@@ -1,10 +1,11 @@
 class Ship {
     static length3Count = 0;
 
-    constructor(length) {
+    constructor(length, coordinates = []) {
         this.length = length;
         this.hits = 0;
         this.name = this.assignName();
+        this.coordinates = coordinates;
     }
 
     assignName() {
@@ -29,6 +30,10 @@ class Ship {
 
     isSunk() {
         return this.hits === this.length;
+    }
+
+    containsCoordinate([x, y]) {
+        return this.coordinates.some(([cx, cy]) => cx === x && cy === y);
     }
 }
 
