@@ -5,10 +5,10 @@ import Player from './Player.js';
 class Game {
     constructor() {
         this.eventListeners();
+        this.player = new Player('real');
     }
 
     initGame() {
-        this.player = new Player('real');
         this.computer = new Player('computer');
         this.currentPlayer = this.player;
         this.gameOver = false;
@@ -54,6 +54,26 @@ class Game {
         });
     }
 
+    placeShip(row, col) {
+        const board = this.player.gameboard;
+    
+        if (this.selectedOrientation === 'horizontal') {
+            if (col + this.selectedShipLength <= 10) {
+                for (let i = 0; i < this.selectedShipLength; i++) {
+                    board.board[row][col + i] = new Ship(this.selectedShipLength);
+                }
+            }
+        } else if (this.selectedOrientation === 'vertical') {
+            if (row + this.selectedShipLength <= 10) {
+                for (let i = 0; i < this.selectedShipLength; i++) {
+                    board.board[row + i][col] = new Ship(this.selectedShipLength);
+                }
+            }
+        }
+    
+        this.highlightPossiblePlacements(row, col);
+    }
+
     renderBoards() {
         this.renderBoard('playerBoard', this.player.gameboard, false);
         this.renderBoard('computerBoard', this.computer.gameboard, true);
@@ -70,6 +90,16 @@ class Game {
                 cell.id = `${boardId}Cell-${row}-${col}`;
                 cell.setAttribute('data-row', row);
                 cell.setAttribute('data-col', col);
+                cell.addEventListener('mouseenter', () => {
+                    if (this.selectedShipLength) {
+                        this.highlightPossiblePlacements(row, col);
+                    }
+                });
+                cell.addEventListener('click', () => {
+                    if (this.selectedShipLength) {
+                        this.placeShip(row, col);
+                    }
+                });
                 boardElement.appendChild(cell);
             }
         }
@@ -182,16 +212,93 @@ class Game {
 
     eventListeners() {
         var gameBtn = document.getElementById('startNewGame');
+        const orientation = document.querySelectorAll('input[name="orientation"]');
+        const ships = ['aircraft', 'battleship', 'submarine', 'destroyer', 'patrol'];
 
         gameBtn.addEventListener('click', () => {
             var playground = document.getElementById('playground');
             var config = document.getElementById('game-config');
 
-            playground.style.cssText = 'display: flex; justify-content: space-around;';
+            playground.style.cssText = 'display: flex; justify-content: center; gap: 100px;';
             config.style.cssText = 'display: none;'
             this.initGame();
         });
+
+        ships.forEach(ship => {
+            const element = document.getElementById(ship);
+            if (element) {
+                element.addEventListener('click', () => {
+                    this.selectedShip(element);
+                });
+            }
+        });
+
+        orientation.forEach(radioButton => {
+            radioButton.addEventListener('change', () => {
+                this.selectedOrientation = document.querySelector('input[name="orientation"]:checked').value;
+
+                this.highlightPossiblePlacements();
+            });
+        });
     }
+
+    selectedShip(ship) {
+        const ids = ['aircraft', 'battleship', 'submarine', 'destroyer', 'patrol'];
+
+        ids.forEach(id => {
+            const elemento = document.getElementById(id);
+            if (elemento) {
+                elemento.classList.remove('selected');
+            }
+        });
+        
+        ship.classList.add('selected');
+
+        this.selectedShipLength = this.getShipLength(ship.id);
+        this.selectedOrientation = document.querySelector('input[name="orientation"]:checked').value;
+
+        this.highlightPossiblePlacements();
+    }
+
+    getShipLength(shipId) {
+        switch (shipId) {
+            case 'aircraft': return 5;
+            case 'battleship': return 4;
+            case 'submarine': return 3;
+            case 'destroyer': return 3;
+            case 'patrol': return 2;
+            default: return 0;
+        }
+    }
+
+    highlightPossiblePlacements(row, col) {
+        const board = document.getElementById('initial-board');
+        const cells = board.getElementsByClassName('cell');
+
+        Array.from(cells).forEach(cell => {
+            cell.classList.remove('highlighted');
+        });
+    
+        if (this.selectedOrientation === 'horizontal') {
+            if (col + this.selectedShipLength <= 10) {
+                for (let i = 0; i < this.selectedShipLength; i++) {
+                    const cell = document.getElementById(`initial-boardCell-${row}-${col + i}`);
+                    if (cell) {
+                        cell.classList.add('highlighted');
+                    }
+                }
+            }
+        } else if (this.selectedOrientation === 'vertical') {
+            if (row + this.selectedShipLength <= 10) {
+                for (let i = 0; i < this.selectedShipLength; i++) {
+                    const cell = document.getElementById(`initial-boardCell-${row + i}-${col}`);
+                    if (cell) {
+                        cell.classList.add('highlighted');
+                    }
+                }
+            }
+        }
+    }    
 }
 
 export default Game;

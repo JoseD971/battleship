@@ -9,17 +9,26 @@
     <h1 class="title">Battleship Game</h1>
     <div id="playground">
         <div class="board-space">
-            <h1>Player</h1>
+            <h1>Your board</h1>
             <div id="playerBoard" class="board"></div>
         </div>
         <div class="board-space">
-            <h1>Computer</h1>
+            <h1>Computer's board</h1>
             <div id="computerBoard" class="board"></div>
         </div>
     </div>
 
     <div id="game-config">
         <div id="ship-selection">
+            <div class="orientation-box">
+                <div class="orientation-group">
+                    <input type="radio" value="horizontal" name="orientation" id="toggleOrientation" checked> Horizontal
+                </div>
+                <div class="orientation-group">
+                    <input type="radio" value="vertical" name="orientation" id="toggleOrientation">
+                    <span>Vertical</span>
+                </div>
+            </div>
             <h3>Your ships</h3>
             <div id="aircraft">
                 <h6>Aircraft Carrier</h6>
@@ -31,7 +40,7 @@
                     <div class="unit"></div>
                 </div>
             </div>
-            <div id="">
+            <div id="battleship">
                 <h6>Battleship</h6>
                 <div class="ship-unit">
                     <div class="unit"></div>
@@ -40,7 +49,7 @@
                     <div class="unit"></div>
                 </div>
             </div>
-            <div id="">
+            <div id="submarine">
                 <h6>Submarine</h6>
                 <div class="ship-unit">
                     <div class="unit"></div>
@@ -48,7 +57,7 @@
                     <div class="unit"></div>
                 </div>
             </div>
-            <div id="">
+            <div id="destroyer">
                 <h6>Destroyer</h6>
                 <div class="ship-unit">
                     <div class="unit"></div>
@@ -56,7 +65,7 @@
                     <div class="unit"></div>
                 </div>
             </div>
-            <div id="">
+            <div id="patrol">
                 <h6>Patrol Boat</h6>
                 <div class="ship-unit">
                     <div class="unit"></div>

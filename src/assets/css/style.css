@@ -43,6 +43,10 @@
     filter: brightness(0.7);
 }
 
+.cell.highlighted {
+    background-color: rgba(0, 255, 0, 0.5);
+}
+
 .hit {
     background-color: rgb(224, 129, 129) !important;
 }
@@ -69,6 +73,7 @@
 
 #playground {
     display: none;
+    margin-bottom: 35px;
 }
 
 #btns-container {
@@ -82,6 +87,12 @@
     color: #ffffff;
     border: none;
     cursor: pointer;
+}
+
+.orientation-group {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 8px;
 }
 
 #game-config {
@@ -121,4 +132,13 @@
     height: 25px;
     background-color: #3177a3;
     border: 1px solid #000;
+}
+
+.selected .ship-unit {
+    border: 2px solid #4dd6b6 !important;
+}
+
+.blocked {
+    cursor: not-allowed;
+    filter: brightness(0.8);
 }
