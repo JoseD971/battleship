@@ -16,6 +16,7 @@ class Ship {
                 return 'Battleship';
             case 3:
                 Ship.length3Count += 1;
+                if (Ship.length3Count  === 2) Ship.length3Count = 0;
                 return Ship.length3Count === 1 ? 'Submarine' : 'Destroyer';
             case 2:
                 return 'Patrol Boat';

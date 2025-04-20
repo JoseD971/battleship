@@ -25,15 +25,15 @@
 
 .board {
     display: grid;
-    grid-template-columns: repeat(10, 50px);
-    grid-template-rows: repeat(10, 50px);
+    grid-template-columns: repeat(10, 35px);
+    grid-template-rows: repeat(10, 35px);
     gap: 1px;
-    margin-bottom: 20px;
+    padding: 15px;
 }
 
 .cell {
-    width: 50px;
-    height: 50px;
+    width: 35px;
+    height: 35px;
     background-color: #add8e6;
     border: 1px solid #000;
     cursor: pointer;
@@ -44,19 +44,21 @@
 }
 
 .hit {
-    background-color: red !important;
+    background-color: rgb(224, 129, 129) !important;
 }
 
 .miss {
-    background-color: gray !important;
+    background-color: rgb(180, 178, 178) !important;
 }
 
 .ship {
-    background-color: darkblue;
+    background-color: #3177a3;
 }
 
 .title {
     text-align: center;
+    color: #216582;
+    text-shadow: 2px 3px 5px #216582;
     margin-bottom: 30px;
 }
 
@@ -65,7 +67,58 @@
     margin-bottom: 10px;
 }
 
-.playground {
+#playground {
+    display: none;
+}
+
+#btns-container {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
+}
+
+#startNewGame {
+    padding: 10px;
+    background-color: #0c3b4b;
+    color: #ffffff;
+    border: none;
+    cursor: pointer;
+}
+
+#game-config {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 35px;
+}
+
+#ship-selection {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+#ship-selection h3 {
+    margin-bottom: 15px;
+}
+
+.ship-unit {
+    display: flex;
+    justify-content: start;
+    gap: 1px;
+    cursor: pointer;
+    padding: 5px;
+    border: 2px solid #636363;
+}
+
+.ship-unit:hover {
+    border: 2px solid #4dd6b6;
+}
+
+.unit {
+    width: 25px;
+    height: 25px;
+    background-color: #3177a3;
+    border: 1px solid #000;
 }

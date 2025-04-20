@@ -7,7 +7,7 @@
 </head>
 <body>
     <h1 class="title">Battleship Game</h1>
-    <div class="playground">
+    <div id="playground">
         <div class="board-space">
             <h1>Player</h1>
             <div id="playerBoard" class="board"></div>
@@ -16,6 +16,59 @@
             <h1>Computer</h1>
             <div id="computerBoard" class="board"></div>
         </div>
+    </div>
+
+    <div id="game-config">
+        <div id="ship-selection">
+            <h3>Your ships</h3>
+            <div id="aircraft">
+                <h6>Aircraft Carrier</h6>
+                <div class="ship-unit">
+                    <div class="unit"></div>
+                    <div class="unit"></div>
+                    <div class="unit"></div>
+                    <div class="unit"></div>
+                    <div class="unit"></div>
+                </div>
+            </div>
+            <div id="">
+                <h6>Battleship</h6>
+                <div class="ship-unit">
+                    <div class="unit"></div>
+                    <div class="unit"></div>
+                    <div class="unit"></div>
+                    <div class="unit"></div>
+                </div>
+            </div>
+            <div id="">
+                <h6>Submarine</h6>
+                <div class="ship-unit">
+                    <div class="unit"></div>
+                    <div class="unit"></div>
+                    <div class="unit"></div>
+                </div>
+            </div>
+            <div id="">
+                <h6>Destroyer</h6>
+                <div class="ship-unit">
+                    <div class="unit"></div>
+                    <div class="unit"></div>
+                    <div class="unit"></div>
+                </div>
+            </div>
+            <div id="">
+                <h6>Patrol Boat</h6>
+                <div class="ship-unit">
+                    <div class="unit"></div>
+                    <div class="unit"></div>
+                </div>
+            </div>
+        </div>
+        <div id="initial-board" class="board"></div>
+    </div>
+
+    <div id="btns-container">
+        <button id="startNewGame" type="button">New Game</button>
     </div>
 </body>
 </html>

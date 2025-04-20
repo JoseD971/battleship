@@ -4,6 +4,10 @@ import Player from './Player.js';
 
 class Game {
     constructor() {
+        this.eventListeners();
+    }
+
+    initGame() {
         this.player = new Player('real');
         this.computer = new Player('computer');
         this.currentPlayer = this.player;
@@ -53,6 +57,22 @@ class Game {
     renderBoards() {
         this.renderBoard('playerBoard', this.player.gameboard, false);
         this.renderBoard('computerBoard', this.computer.gameboard, true);
+    }
+
+    renderInitialBoard(boardId) {
+        const boardElement = document.getElementById(boardId);
+        boardElement.innerHTML = '';
+
+        for (let row = 0; row < 10; row++) {
+            for (let col = 0; col < 10; col++) {
+                const cell = document.createElement('div');
+                cell.classList.add('cell');
+                cell.id = `${boardId}Cell-${row}-${col}`;
+                cell.setAttribute('data-row', row);
+                cell.setAttribute('data-col', col);
+                boardElement.appendChild(cell);
+            }
+        }
     }
 
     renderBoard(boardId, gameboard, isComputer) {
@@ -152,14 +172,25 @@ class Game {
 
                     if (hit) {
                         cell.classList.add('hit');
-                        console.log(cell);
                     } else {
                         cell.classList.add('miss');
-                        console.log(cell);
                     }
                 }
             }
         }, 1000);
+    }
+
+    eventListeners() {
+        var gameBtn = document.getElementById('startNewGame');
+
+        gameBtn.addEventListener('click', () => {
+            var playground = document.getElementById('playground');
+            var config = document.getElementById('game-config');
+
+            playground.style.cssText = 'display: flex; justify-content: space-around;';
+            config.style.cssText = 'display: none;'
+            this.initGame();
+        });
     }
 }
 
