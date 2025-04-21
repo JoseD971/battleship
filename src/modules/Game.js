@@ -136,7 +136,9 @@ class Game {
                     if (cellContent.hits > 0) {
                         cell.classList.add('hit');
                     } else {
-                        cell.classList.add('ship');
+                        if(boardId === 'playerBoard') {
+                            cell.classList.add('ship');
+                        }
                     }
                 }
     
@@ -144,14 +146,18 @@ class Game {
                     if (!gameboard.attacks.some(([x, y]) => x === row && y === col)) {
                         cell.addEventListener('click', () => {
 
-                            if (this.currentPlayer === this.player && !this.gameOver) {
+                            if (this.currentPlayer === this.player && this.gameOver === false) {
                                 const hit = this.handleAttack(row, col, this.computer);
                                 const cell = document.getElementById(`computerBoardCell-${row}-${col}`); 
 
                                 if (hit) {
                                     cell.classList.add('hit');
                                 } else {
-                                    cell.classList.add('miss'); 
+                                    if(this.gameOver === true) {
+                                        cell.classList.add('hit'); 
+                                    } else {
+                                        cell.classList.add('miss'); 
+                                    }
                                 }
                             }
                         });
@@ -293,7 +299,7 @@ class Game {
             playground.style.cssText = 'display: flex; justify-content: center; gap: 100px;';
             config.style.cssText = 'display: none;';
 
-            this.real = new Player('real');
+            this.player = new Player('real');
             const playerShips = [
                 new Ship(5),
                 new Ship(4),
@@ -301,14 +307,15 @@ class Game {
                 new Ship(3),
                 new Ship(2),
             ];
-            this.placeShipsRandomly(this.real.gameboard, playerShips);
+            this.placeShipsRandomly(this.player.gameboard, playerShips);
             this.computer = new Player('computer');
-            this.currentPlayer = this.real;
+            this.currentPlayer = this.player;
             this.gameOver = false;
             this.setupComputerBoard();
-            this.renderBoard('playerBoard', this.real.gameboard, false);
+            this.renderBoard('playerBoard', this.player.gameboard, false);
             this.renderBoard('computerBoard', this.computer.gameboard, true);
-            this.gameOver = false;
+            newBtn.style.display = 'block';
+            gameBtn.style.display = 'none';
         });
 
         ships.forEach(ship => {
