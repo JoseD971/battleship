@@ -48,11 +48,11 @@
 }
 
 .hit {
-    background-color: rgb(224, 129, 129) !important;
+    background-color: rgb(185, 97, 97) !important;
 }
 
 .miss {
-    background-color: rgb(180, 178, 178) !important;
+    background-color: rgb(110, 109, 109) !important;
 }
 
 .ship {

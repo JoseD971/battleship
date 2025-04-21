@@ -150,13 +150,13 @@ class Game {
                                 const hit = this.handleAttack(row, col, this.computer);
                                 const cell = document.getElementById(`computerBoardCell-${row}-${col}`); 
 
-                                if (hit) {
+                                if (hit === true) {
                                     cell.classList.add('hit');
-                                } else {
+                                } else if(hit === false) {
                                     if(this.gameOver === true) {
                                         cell.classList.add('hit'); 
                                     } else {
-                                        cell.classList.add('miss'); 
+                                        cell.classList.add('miss');
                                     }
                                 }
                             }
@@ -174,7 +174,7 @@ class Game {
     
         if (opponent.gameboard.attacks.some(([x, y]) => x === row && y === col)) {
             alert("You have already attacked this cell! Please choose another.");
-            return false;
+            return 'already attacked';
         }
     
         const hit = opponent.gameboard.receiveAttack([row, col]);
@@ -201,7 +201,7 @@ class Game {
         if (this.currentPlayer === this.computer && !this.gameOver) {
             this.computerTurn();
         }
-    
+
         return hit;
     }
 
@@ -221,10 +221,14 @@ class Game {
                     const cell = document.getElementById(`playerBoardCell-${row}-${col}`);
                     attackMade = true;
 
-                    if (hit) {
+                    if (hit === true) {
                         cell.classList.add('hit');
-                    } else {
-                        cell.classList.add('miss');
+                    } else if(hit === false) {
+                        if(this.gameOver === true) {
+                            cell.classList.add('hit'); 
+                        } else {
+                            cell.classList.add('miss');
+                        }
                     }
                 }
             }
@@ -299,7 +303,7 @@ class Game {
             playground.style.cssText = 'display: flex; justify-content: center; gap: 100px;';
             config.style.cssText = 'display: none;';
 
-            this.player = new Player('real');
+            this.player = new Player('player');
             const playerShips = [
                 new Ship(5),
                 new Ship(4),
