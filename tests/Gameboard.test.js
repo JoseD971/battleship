@@ -32,7 +32,7 @@ describe('Gameboard', () => {
 
     test('should register a miss correctly', () => {
         gameboard.receiveAttack([9, 9]);
-        expect(gameboard.missedAttacks).toContainEqual([9, 9]);
+        expect(gameboard.attacks).toContainEqual([9, 9]);
     });
 
     test('should correctly report if all ships are sunk', () => {

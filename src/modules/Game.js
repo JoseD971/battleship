@@ -5,26 +5,11 @@ import Player from './Player.js';
 class Game {
     constructor() {
         this.eventListeners();
-        this.player = new Player('real');
+        this.selectShip = null;
+        this.player = new Player('player');
     }
 
-    initGame() {
-        this.computer = new Player('computer');
-        this.currentPlayer = this.player;
-        this.gameOver = false;
-        this.setupBoards();
-        this.renderBoards();
-    }
-
-    setupBoards() {
-        const playerShips = [
-            new Ship(5),
-            new Ship(4),
-            new Ship(3),
-            new Ship(3),
-            new Ship(2),
-        ];
-
+    setupComputerBoard() {
         const computerShips = [
             new Ship(5),
             new Ship(4),
@@ -33,11 +18,10 @@ class Game {
             new Ship(2),
         ];
 
-        this.placeShips(this.player.gameboard, playerShips);
-        this.placeShips(this.computer.gameboard, computerShips);
+        this.placeShipsRandomly(this.computer.gameboard, computerShips);
     }
 
-    placeShips(gameboard, ships) {
+    placeShipsRandomly(gameboard, ships) {
         ships.forEach((ship) => {
             let placed = false;
             while (!placed) {
@@ -54,30 +38,62 @@ class Game {
         });
     }
 
-    placeShip(row, col) {
-        const board = this.player.gameboard;
+    setShipLocation(row, col) {
+    
+        var shipCoordinates = [];
+        let canPlace = true;
     
         if (this.selectedOrientation === 'horizontal') {
             if (col + this.selectedShipLength <= 10) {
                 for (let i = 0; i < this.selectedShipLength; i++) {
-                    board.board[row][col + i] = new Ship(this.selectedShipLength);
+                    const cell = this.player.gameboard.board[row][col + i];
+                    if (cell !== null) {
+                        canPlace = false;
+                        break;
+                    }
+                    shipCoordinates.push([row, col + i]);
                 }
+            } else {
+                canPlace = false; 
             }
         } else if (this.selectedOrientation === 'vertical') {
             if (row + this.selectedShipLength <= 10) {
                 for (let i = 0; i < this.selectedShipLength; i++) {
-                    board.board[row + i][col] = new Ship(this.selectedShipLength);
+                    const cell = this.player.gameboard.board[row + i][col];
+                    if (cell !== null) {
+                        canPlace = false;
+                        break;
+                    }
+                    shipCoordinates.push([row + i, col]);
                 }
+            } else {
+                canPlace = false; 
             }
         }
-    
-        this.highlightPossiblePlacements(row, col);
-    }
 
-    renderBoards() {
-        this.renderBoard('playerBoard', this.player.gameboard, false);
-        this.renderBoard('computerBoard', this.computer.gameboard, true);
-    }
+        if (canPlace) {
+            const ship = new Ship(this.selectedShipLength);
+            try {
+                this.player.gameboard.placeShip(ship, [row, col], this.selectedOrientation);
+            } catch (error) {
+                console.log(`Cannot place the ${this.selectShip} in (${row}, ${col})`);
+            }
+
+            for (let i = 0; i < this.selectedShipLength; i++) {
+                const [x, y] = shipCoordinates[i];
+                const cell = document.getElementById(`initial-boardCell-${x}-${y}`);
+                if (cell) {
+                    cell.classList.add('ship');
+                }
+            }
+    
+            this.selectedShipLength = 0;
+            this.updateShipSelection();
+            this.highlightPossiblePlacements(row, col);
+        } else {
+            alert('The ship cannot be placed in that position');
+        }
+    } 
 
     renderInitialBoard(boardId) {
         const boardElement = document.getElementById(boardId);
@@ -97,7 +113,7 @@ class Game {
                 });
                 cell.addEventListener('click', () => {
                     if (this.selectedShipLength) {
-                        this.placeShip(row, col);
+                        this.setShipLocation(row, col);
                     }
                 });
                 boardElement.appendChild(cell);
@@ -185,7 +201,6 @@ class Game {
 
     switchTurn() {
         this.currentPlayer = this.currentPlayer === this.player ? this.computer : this.player;
-        console.log(this.currentPlayer);
     }
 
     computerTurn() {
@@ -211,7 +226,8 @@ class Game {
     }
 
     eventListeners() {
-        var gameBtn = document.getElementById('startNewGame');
+        const gameBtn = document.getElementById('startNewGame');
+        const randomBtn = document.getElementById('randomGame');
         const orientation = document.querySelectorAll('input[name="orientation"]');
         const ships = ['aircraft', 'battleship', 'submarine', 'destroyer', 'patrol'];
 
@@ -221,7 +237,37 @@ class Game {
 
             playground.style.cssText = 'display: flex; justify-content: center; gap: 100px;';
             config.style.cssText = 'display: none;'
-            this.initGame();
+
+            this.computer = new Player('computer');
+            this.currentPlayer = this.player;
+            this.gameOver = false;
+            this.setupComputerBoard();
+            this.renderBoard('playerBoard', this.player.gameboard, false);
+            this.renderBoard('computerBoard', this.computer.gameboard, true);
+        });
+
+        randomBtn.addEventListener('click', () => {
+            var playground = document.getElementById('playground');
+            var config = document.getElementById('game-config');
+
+            playground.style.cssText = 'display: flex; justify-content: center; gap: 100px;';
+            config.style.cssText = 'display: none;';
+
+            this.real = new Player('real');
+            const playerShips = [
+                new Ship(5),
+                new Ship(4),
+                new Ship(3),
+                new Ship(3),
+                new Ship(2),
+            ];
+            this.placeShipsRandomly(this.real.gameboard, playerShips);
+            this.computer = new Player('computer');
+            this.currentPlayer = this.real;
+            this.gameOver = false;
+            this.setupComputerBoard();
+            this.renderBoard('playerBoard', this.real.gameboard, false);
+            this.renderBoard('computerBoard', this.computer.gameboard, true);
         });
 
         ships.forEach(ship => {
@@ -243,6 +289,7 @@ class Game {
     }
 
     selectedShip(ship) {
+        this.selectShip = ship.id;
         const ids = ['aircraft', 'battleship', 'submarine', 'destroyer', 'patrol'];
 
         ids.forEach(id => {
@@ -260,6 +307,22 @@ class Game {
         this.highlightPossiblePlacements();
     }
 
+    updateShipSelection() {
+        const ids = ['aircraft', 'battleship', 'submarine', 'destroyer', 'patrol'];
+
+        ids.forEach(id => {
+            const elemento = document.getElementById(id);
+            if (elemento) {
+                elemento.classList.remove('selected');
+            }
+        });
+    
+        const selectedElement = document.getElementById(this.selectShip);
+        if (selectedElement) {
+            selectedElement.style.display = 'none';
+        }
+    }
+    
     getShipLength(shipId) {
         switch (shipId) {
             case 'aircraft': return 5;

@@ -81,8 +81,9 @@
     justify-content: center;
 }
 
-#startNewGame {
+.game-btn {
     padding: 10px;
+    margin: 0 20px;
     background-color: #0c3b4b;
     color: #ffffff;
     border: none;

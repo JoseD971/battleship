@@ -42,7 +42,7 @@ class Gameboard {
         return true;
       }
 
-      receiveAttack(coordinates) {
+    receiveAttack(coordinates) {
         const [x, y] = coordinates;
         const ship = this.board[x][y];
     

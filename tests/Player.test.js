@@ -37,6 +37,6 @@ describe('Player', () => {
 
     test('should track missed attacks for real player', () => {
         realPlayer.attack([9, 9], computerPlayer);
-        expect(computerPlayer.gameboard.missedAttacks).toContainEqual([9, 9]);
+        expect(computerPlayer.gameboard.attacks).toContainEqual([9, 9]);
     });
 });
