@@ -90,6 +90,10 @@
     cursor: pointer;
 }
 
+#newGame {
+    display: none;
+}
+
 .orientation-group {
     display: flex;
     gap: 5px;

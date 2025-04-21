@@ -226,17 +226,31 @@ class Game {
     }
 
     eventListeners() {
-        const gameBtn = document.getElementById('startNewGame');
+        const gameBtn = document.getElementById('startGame');
+        const newBtn = document.getElementById('newGame');
         const randomBtn = document.getElementById('randomGame');
         const orientation = document.querySelectorAll('input[name="orientation"]');
         const ships = ['aircraft', 'battleship', 'submarine', 'destroyer', 'patrol'];
 
         gameBtn.addEventListener('click', () => {
+            const ids = ['aircraft', 'battleship', 'submarine', 'destroyer', 'patrol'];
+
+            for (let id of ids) {
+                const elemento = document.getElementById(id);
+                if (elemento) {
+                    const style = window.getComputedStyle(elemento);
+                    if (style.display !== 'none') {
+                        alert('Please, place all ships on the board');
+                        return;
+                    }
+                }
+            }
+
             var playground = document.getElementById('playground');
             var config = document.getElementById('game-config');
 
             playground.style.cssText = 'display: flex; justify-content: center; gap: 100px;';
-            config.style.cssText = 'display: none;'
+            config.style.cssText = 'display: none;';
 
             this.computer = new Player('computer');
             this.currentPlayer = this.player;
@@ -244,7 +258,33 @@ class Game {
             this.setupComputerBoard();
             this.renderBoard('playerBoard', this.player.gameboard, false);
             this.renderBoard('computerBoard', this.computer.gameboard, true);
+            gameBtn.style.display = 'none';
+            newBtn.style.display = 'block';
         });
+
+        newBtn.addEventListener('click', () => {
+            var playground = document.getElementById('playground');
+            var config = document.getElementById('game-config');
+
+            playground.style.cssText = 'display: none;';
+            config.style.cssText = 'display: flex;';
+            newBtn.style.display = 'none';
+            gameBtn.style.display = 'block';
+
+            const ids = ['aircraft', 'battleship', 'submarine', 'destroyer', 'patrol'];
+
+            for (let id of ids) {
+                const elemento = document.getElementById(id);
+                if (elemento) {
+                    elemento.style.display = 'block';
+                }
+            }
+
+            this.renderInitialBoard('initial-board');
+            this.player.gameboard.board = Array(10).fill().map(() => Array(10).fill(null));
+            this.player.gameboard.attacks = [];
+            this.gameOver = false;
+        }); 
 
         randomBtn.addEventListener('click', () => {
             var playground = document.getElementById('playground');
@@ -268,6 +308,7 @@ class Game {
             this.setupComputerBoard();
             this.renderBoard('playerBoard', this.real.gameboard, false);
             this.renderBoard('computerBoard', this.computer.gameboard, true);
+            this.gameOver = false;
         });
 
         ships.forEach(ship => {
